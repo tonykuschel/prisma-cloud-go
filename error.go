@@ -9,6 +9,7 @@ import (
 var InvalidCredentialsError = errors.New("invalid credentials")
 var ObjectNotFoundError = errors.New("object not found")
 var AlreadyExistsError = errors.New("object already exists")
+var DuplicateCloudAccountError = errors.New("duplicate cloud account")
 
 type PrismaCloudErrorList struct {
 	Errors     []PrismaCloudError
@@ -38,6 +39,8 @@ func (e PrismaCloudErrorList) GenericError() error {
 			return ObjectNotFoundError
 		} else if e.Errors[i].AlreadyExists() {
 			return AlreadyExistsError
+		} else if e.Errors[i].DuplicateCloudAccount() {
+			return DuplicateCloudAccountError
 		}
 	}
 
@@ -61,6 +64,10 @@ func (e PrismaCloudError) ObjectNotFound() bool {
 
 func (e PrismaCloudError) AlreadyExists() bool {
 	return strings.HasSuffix(e.Message, "_already_exists")
+}
+
+func (e PrismaCloudError) DuplicateCloudAccount() bool {
+	return strings.Contains(e.Message, "duplicate_cloud_account")
 }
 
 func (e PrismaCloudError) Error() string {
