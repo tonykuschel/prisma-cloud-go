@@ -135,6 +135,42 @@ func Disable(c pc.PrismaCloudClient, cloudType, id string) error {
 	return err
 }
 
+// GetID returns the account id of the cloud account.
+func GetID(account interface{}) (string, error) {
+	switch v := account.(type) {
+	case nil:
+		return "", fmt.Errorf("cloud account can not be nil")
+	case Aws:
+		return v.AccountId, nil
+	case Azure:
+		return v.Account.AccountId, nil
+	case Gcp:
+		return v.Account.AccountId, nil
+	case Alibaba:
+		return v.AccountId, nil
+	default:
+		return "", fmt.Errorf("invalid account type %v", v)
+	}
+}
+
+// GetType returns the account type of the cloud account.
+func GetType(account interface{}) (string, error) {
+	switch v := account.(type) {
+	case nil:
+		return "", fmt.Errorf("cloud account can not be nil")
+	case Aws:
+		return TypeAws, nil
+	case Azure:
+		return TypeAzure, nil
+	case Gcp:
+		return TypeGcp, nil
+	case Alibaba:
+		return TypeAlibaba, nil
+	default:
+		return "", fmt.Errorf("invalid account type %v", v)
+	}
+}
+
 func createUpdate(exists bool, c pc.PrismaCloudClient, account interface{}) error {
 	var (
 		cloudType string
