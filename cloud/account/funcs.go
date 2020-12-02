@@ -103,7 +103,7 @@ func Get(c pc.PrismaCloudClient, cloudType, id string) (interface{}, error) {
 
 // Create onboards a new cloud account onto the Prisma Cloud platform.
 func Create(c pc.PrismaCloudClient, account interface{}) error {
-	return createUpdate(true, c, account)
+	return createUpdate(false, c, account)
 }
 
 // Update modifies information related to a cloud account.
