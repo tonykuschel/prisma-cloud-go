@@ -123,6 +123,54 @@ func Delete(c pc.PrismaCloudClient, cloudType, id string) error {
 	return err
 }
 
+// Disable disables an onboarded cloud account using the cloud account ID.
+func Disable(c pc.PrismaCloudClient, cloudType, id string) error {
+	c.Log(pc.LogAction, "(disable) %s type:%s id:%s", singular, cloudType, id)
+
+	path := make([]string, 0, len(Suffix)+2)
+	path = append(path, Suffix...)
+	path = append(path, cloudType, id)
+
+	_, err := c.Communicate("PATCH", path, nil, map[string]interface{}{"enabled": false}, nil)
+	return err
+}
+
+// GetID returns the account id of the cloud account.
+func GetID(account interface{}) (string, error) {
+	switch v := account.(type) {
+	case nil:
+		return "", fmt.Errorf("cloud account can not be nil")
+	case Aws:
+		return v.AccountId, nil
+	case Azure:
+		return v.Account.AccountId, nil
+	case Gcp:
+		return v.Account.AccountId, nil
+	case Alibaba:
+		return v.AccountId, nil
+	default:
+		return "", fmt.Errorf("invalid account type %v", v)
+	}
+}
+
+// GetType returns the account type of the cloud account.
+func GetType(account interface{}) (string, error) {
+	switch v := account.(type) {
+	case nil:
+		return "", fmt.Errorf("cloud account can not be nil")
+	case Aws:
+		return TypeAws, nil
+	case Azure:
+		return TypeAzure, nil
+	case Gcp:
+		return TypeGcp, nil
+	case Alibaba:
+		return TypeAlibaba, nil
+	default:
+		return "", fmt.Errorf("invalid account type %v", v)
+	}
+}
+
 func createUpdate(exists bool, c pc.PrismaCloudClient, account interface{}) error {
 	var (
 		cloudType string
