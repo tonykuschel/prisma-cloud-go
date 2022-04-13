@@ -20,6 +20,11 @@ type Integration struct {
 type IntegrationConfig struct {
 	// Amazon SQS.
 	QueueUrl string `json:"queueUrl,omitempty"`
+	// RoleArn
+	// ExternalId
+	// AccessKey
+	// SecretKey
+	MoreInfo bool `json:"moreInfo,omitempty"`
 
 	// Qualys.
 	Login    string `json:"login,omitempty"`
@@ -43,6 +48,52 @@ type IntegrationConfig struct {
 
 	// Slack
 	WebHookUrl string `json:"webhookUrl,omitempty"`
+
+	// Google CSCC
+	SourceId string `json:"sourceId,omitempty"`
+	OrgId    string `json:"orgId,omitempty"`
+
+	// Tenable
+	AccessKey string `json:"accessKey,omitempty"`
+	SecretKey string `json:"secretKey,omitempty"`
+
+	// Cortex/demisto
+	ApiKey string `json:"apiKey,omitempty"`
+	// HostUrl
+	// Version
+
+	// Okta
+	Domain   string `json:"domain,omitempty"`
+	ApiToken string `json:"apiToken,omitempty"`
+
+	// Snowflake
+	UserName             string `json:"username,omitempty"`
+	PipeName             string `json:"pipename,omitempty"`
+	PrivateKey           string `json:"privateKey,omitempty"`
+	PassPhrase           string `json:"passphrase,omitempty"`
+	StagingIntegrationID string `json:"stagingIntegrationId,omitempty"`
+	// RollUpInterval
+
+	// AWS security hub
+	AccountId string   `json:"accountId,omitempty"`
+	Regions   []Region `json:"regions,omitempty"`
+
+	// Azure Service Bus Queue
+	ConnectionString string `json:"connectionString,omitempty"`
+	// AccountId
+	// QueueUrl
+
+	// Amazon S3
+	S3Uri          string `json:"s3Uri,omitempty"`
+	Region         string `json:"region,omitempty"`
+	RoleArn        string `json:"roleArn,omitempty"`
+	ExternalId     string `json:"externalId,omitempty"`
+	RollUpInterval int    `json:"rollUpInterval,omitempty"`
+
+	// Splunk
+	SourceType string `json:"sourceType,omitempty"`
+	// Url
+	// AuthToken
 }
 
 type Header struct {
@@ -68,4 +119,15 @@ type Details struct {
 type AlertRule struct {
 	PolicyScanConfigId string `json:"policyScanConfigId"`
 	Name               string `json:"name"`
+}
+
+type Region struct {
+	Name          string `json:"name"`
+	ApiIdentifier string `json:"apiIdentifier"`
+	CloudType     string `json:"cloudType"`
+	SdkId         string `json:"sdkId"`
+}
+
+type LicenseInfo struct {
+	PrismaId string `json:"prismaId"`
 }
